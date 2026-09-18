@@ -13,3 +13,11 @@ __pycache__/
 *.pyc
 .venv*/
 venv/
+
+# web deck (React)
+web/node_modules/
+web/dist/
+
+# Figma token (client-side deck)
+web/.env.local
+web/*.local
