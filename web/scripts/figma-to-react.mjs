@@ -32,19 +32,40 @@ const get = (flag) => {
   const i = args.indexOf(flag);
   return i >= 0 ? args[i + 1] : undefined;
 };
-const fileKey = get("--file");
+let fileKey = get("--file");
 const nodeId = get("--node");
 const fromJson = get("--from-json");
 const outArg = get("--out");
+let cliToken = get("--token") ?? "";
+
+// People sometimes pass the token where the file key goes — recover from that.
+if (fileKey && /^figd_/.test(fileKey)) {
+  console.warn(`Note: "${fileKey.slice(0, 8)}…" looks like a Figma TOKEN, not a file key.`);
+  console.warn("The file key is the long id in your Figma URL:\n  https://www.figma.com/design/<FILE_KEY>/Name  →  --file <FILE_KEY>\nUsing it as the token instead.");
+  if (!cliToken) cliToken = fileKey;
+  fileKey = undefined;
+}
+
 if (!fileKey && !fromJson) {
   console.error(
-    "Usage:\n  node scripts/figma-to-react.mjs --file <fileKey> [--node <id>]\n  node scripts/figma-to-react.mjs --from-json <path>"
+    [
+      "Usage:",
+      "  node scripts/figma-to-react.mjs --file <fileKey> [--node <id>] [--token <figd_…>]",
+      "  node scripts/figma-to-react.mjs --from-json <path>",
+      "",
+      "fileKey = the id in your Figma file URL:",
+      "  https://www.figma.com/design/<fileKey>/Your%20File  →  <fileKey>",
+      "",
+      "Token (for --file mode): FIGMA_TOKEN env var, --token flag, or",
+      "VITE_FIGMA_TOKEN in web/.env.local",
+    ].join("\n")
   );
   process.exit(1);
 }
 
 // ---------- token ----------
 function loadToken() {
+  if (cliToken) return cliToken;
   if (process.env.FIGMA_TOKEN) return process.env.FIGMA_TOKEN;
   try {
     const envLocal = readFileSync(join(__dirname, "..", ".env.local"), "utf8");
@@ -64,17 +85,30 @@ if (fromJson) {
 } else {
   const token = loadToken();
   if (!token) {
-    console.error("No token: set FIGMA_TOKEN or add VITE_FIGMA_TOKEN to web/.env.local");
+    console.error(
+      [
+        "No Figma token found. Create one (Figma → Settings → Security → Personal access tokens)",
+        "then either:",
+        "  echo 'VITE_FIGMA_TOKEN=figd_...' > .env.local",
+        "or:  FIGMA_TOKEN=figd_... npm run figma:generate -- --file <fileKey>",
+      ].join("\n")
+    );
     process.exit(1);
   }
   const { Api } = await import("figma-api");
   const api = new Api({ personalAccessToken: token });
   console.log(`Fetching file ${fileKey} via Figma REST API (figma-api)…`);
   if (nodeId) {
-    const res = await api.nodes.get({ fileKey, node_id: nodeId.replace(/:/g, "-") });
-    source = res.nodes[Object.keys(res.nodes)[0]]?.document ?? res;
+    // v2 flat API: getFileNodes({ file_key }, { ids }) — ids use dash form
+    const res = await api.getFileNodes({ file_key: fileKey }, { ids: nodeId.replace(/:/g, "-") });
+    const first = Object.values(res.nodes ?? {})[0]?.document;
+    if (first && (first.type === "FRAME" || first.type === "INSTANCE")) {
+      source = { name: `${res.name ?? fileKey} — node ${nodeId}`, document: { type: "DOCUMENT", children: [first] } };
+    } else {
+      source = res;
+    }
   } else {
-    source = await api.files.get({ fileKey });
+    source = await api.getFile({ file_key: fileKey });
   }
 }
 

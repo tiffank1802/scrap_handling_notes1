@@ -39,11 +39,13 @@ export interface FigmaFileDoc {
   lastModified: string;
   pages: { id: string; name: string }[];
   nodes: FigmaNodeSummary[];
+  /** The raw full document response (complete node tree for live rendering). */
+  full: any;
 }
 
-/** Fetch a file's document and return a flat list of top-level nodes per page. */
+/** Fetch a file's full document (needed by FigmaRenderer for fills/styles) and a flat node list. */
 export async function fetchFigmaFile(fileKey: string, token: string): Promise<FigmaFileDoc> {
-  const data = await figmaFetch(`/files/${encodeURIComponent(fileKey)}?depth=2`, token);
+  const data = await figmaFetch(`/files/${encodeURIComponent(fileKey)}`, token);
   const pages: { id: string; name: string }[] = [];
   const nodes: FigmaNodeSummary[] = [];
   const doc = data.document;
@@ -58,7 +60,7 @@ export async function fetchFigmaFile(fileKey: string, token: string): Promise<Fi
       }
     }
   }
-  return { name: data.name ?? "Figma file", lastModified: data.lastModified ?? "", pages, nodes };
+  return { name: data.name ?? "Figma file", lastModified: data.lastModified ?? "", pages, nodes, full: data };
 }
 
 /** Render a specific node (or the whole file) to a PNG; returns an image URL (valid ~1h). */

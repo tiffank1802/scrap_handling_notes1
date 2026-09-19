@@ -26,6 +26,51 @@ npm run build                     # type-check + production bundle in dist/
 | `F` / **◇ Figma**      | Figma bridge panel                            |
 | `⛶`                    | fullscreen                                    |
 
+### Token vs file key
+
+These are two different things:
+
+- **Token** = `figd_…` (Figma → Settings → Security → Personal access tokens). Never the URL part.
+- **File key** = the long id in your Figma file URL:
+  `https://www.figma.com/design/AbC123xYz-9876kLmN/My-Deck?node-id=1-2`
+  → file key `AbC123xYz-9876kLmN`, node id `1:2`.
+
+Set the token once (the generator + the in-app panel both pick it up):
+
+```bash
+cd web
+echo 'VITE_FIGMA_TOKEN=figd_your_token_here' > .env.local   # gitignored
+```
+
+Then:
+
+```bash
+npm run figma:generate -- --file <fileKey>             # whole file
+npm run figma:generate -- --file <fileKey> --node 1:2  # one frame
+```
+
+(The generator also accepts `--token figd_…`, and if you paste the token where
+the file key goes it will tell you and use it as the token instead.)
+
+### Troubleshooting (macOS / synced folders)
+
+**`Error: Cannot find native binding` (rolldown) when running `npm run dev`**
+— known npm optional-dependency bug, usually after a `node_modules` that was
+copied/synced from another machine (e.g. via Google Drive):
+
+```bash
+cd web
+rm -rf node_modules package-lock.json
+npm install
+npm run dev -- --host 0.0.0.0
+```
+
+(If you're already inside `web/`, don't `cd web` again — run the commands as-is.)
+
+**`No token` / 403 from the generator** — you're on a machine without
+`web/.env.local` (it's gitignored, so it doesn't sync). Create it there with
+the command above, or pass `--token figd_…`.
+
 ## Structure
 
 - `src/slides.tsx` — the 13 slide components (1:1 content with the PPTX).
