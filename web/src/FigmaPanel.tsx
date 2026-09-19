@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import {
   DEFAULT_FIGMA_TOKEN,
   fetchFigmaFile,
@@ -6,26 +6,55 @@ import {
   renderFigmaNode,
   type FigmaFileDoc,
 } from "./figma";
+import FigmaRenderer from "./FigmaRenderer";
+import { figmaTreeToJsx, findSlideFrames, type FigmaNode } from "./figmaToReact";
+import sampleFile from "../scripts/sample-slide.json";
+import { GENERATED_SLIDES } from "./figma/generated/slides.generated";
 
 interface Props {
   onClose: () => void;
 }
 
+const PANEL_W = 460;
+const PAD = 24;
+const FIT_W = PANEL_W - PAD * 2;
+
+/** The committed generated slide (proof that the pipeline runs end-to-end). */
+const SampleSlide = GENERATED_SLIDES[0]?.component ?? null;
+
+function Scaled({ children, w }: { children: ReactNode; w: number }) {
+  const s = Math.min(1, FIT_W / w);
+  return (
+    <div style={{ overflow: "hidden" }}>
+      <div style={{ transform: `scale(${s})`, transformOrigin: "top left", height: 720 * s, width: w * s }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 /**
- * Figma bridge — a live window into the design file behind this deck.
- * Paste a Figma file URL (or file key) + your token, then render any
- * top-level node as a PNG reference. All calls run in the browser.
+ * Figma bridge — Figma components → live React.
+ * Loads a Figma file via the REST API (or the bundled sample), renders its
+ * node tree as React/CSS, and exports the generated React code.
  */
 export default function FigmaPanel({ onClose }: Props) {
   const [token, setToken] = useState(DEFAULT_FIGMA_TOKEN);
   const [input, setInput] = useState("");
   const [doc, setDoc] = useState<FigmaFileDoc | null>(null);
   const [fileKey, setFileKey] = useState("");
+  const [source, setSource] = useState<any | null>(null);
+  const [sourceLabel, setSourceLabel] = useState("");
+  const [frameIdx, setFrameIdx] = useState(0);
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
   const [err, setErr] = useState(false);
   const [imgUrl, setImgUrl] = useState("");
   const [busy, setBusy] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const frames = useMemo<FigmaNode[]>(() => (source ? findSlideFrames(source.document ?? source) : []), [source]);
+  const frame = frames[Math.min(frameIdx, frames.length - 1)];
 
   function say(t: string, isErr = false) {
     setMsg(t);
@@ -52,6 +81,14 @@ export default function FigmaPanel({ onClose }: Props) {
     }
   }
 
+  function loadSample() {
+    setSource(sampleFile);
+    setSourceLabel("Bundled sample (scripts/sample-slide.json)");
+    setFrameIdx(0);
+    setImgUrl("");
+    say("Sample loaded — node tree rendered below, generated code committed in src/figma/generated/.");
+  }
+
   async function preview(nodeId: string, key = fileKey) {
     if (!token) return say("Token missing.", true);
     setBusy(true);
@@ -67,11 +104,37 @@ export default function FigmaPanel({ onClose }: Props) {
     }
   }
 
+  const generatedCode = useMemo(() => (frame ? figmaTreeToJsx(frame) : ""), [frame]);
+
+  async function copyCode() {
+    try {
+      await navigator.clipboard.writeText(generatedCode);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      say("Clipboard blocked — select the code in the <details> below instead.", true);
+    }
+  }
+
+  function downloadCode() {
+    const blob = new Blob([generatedCode], { type: "text/javascript" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "figma-slide.generated.tsx";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
   return (
     <div className="figma-panel">
       <div className="head" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <h3>Figma bridge</h3>
+        <h3>Figma → React bridge</h3>
         <button className="icon-btn" onClick={onClose}>✕ close</button>
+      </div>
+
+      <div className="row" style={{ gap: 8 }}>
+        <button className="icon-btn" onClick={loadSample}>▶ Load bundled sample</button>
+        <span className="figma-msg" style={{ alignSelf: "center" }}>— or load your file —</span>
       </div>
 
       <div>
@@ -98,15 +161,16 @@ export default function FigmaPanel({ onClose }: Props) {
       </div>
 
       <p className="figma-msg" style={{ marginTop: 0 }}>
-        Reads <code>GET /v1/files/:key</code> and renders nodes via <code>GET /v1/images/:key</code>.
-        Runs entirely in your browser — the token never leaves the page except to Figma.
+        REST calls run in your browser (<code>figma-api</code> surface): <code>GET /v1/files/:key</code> →
+        node tree → live React render + generated code. The committed generator
+        (<code>scripts/figma-to-react.mjs</code>) does the same in Node against your real file.
       </p>
 
       {msg && <p className={`figma-msg ${err ? "err" : ""}`}>{msg}</p>}
 
       {doc && (
         <div>
-          <label>Top-level nodes — click to render</label>
+          <label>Top-level nodes — click to render PNG</label>
           <div className="node-tree" style={{ marginTop: 5 }}>
             {doc.pages.map((p) => (
               <div key={p.id} style={{ fontWeight: 800, color: "var(--ink)", marginTop: 6 }}>▸ {p.name}</div>
@@ -122,14 +186,82 @@ export default function FigmaPanel({ onClose }: Props) {
         </div>
       )}
 
-      <div>
-        <label>Rendered node</label>
-        <div className="figma-preview" style={{ marginTop: 5 }}>
-          {busy ? <div className="empty">Rendering…</div>
-            : imgUrl ? <img src={imgUrl} alt="Figma node render" />
-            : <div className="empty">Select a node above to render a PNG reference from Figma here.</div>}
+      {doc && (
+        <div>
+          <label>Figma node as PNG</label>
+          <div className="figma-preview" style={{ marginTop: 5 }}>
+            {busy ? <div className="empty">Rendering…</div>
+              : imgUrl ? <img src={imgUrl} alt="Figma node render" />
+              : <div className="empty">Select a node above to render a PNG reference from Figma.</div>}
+          </div>
         </div>
-      </div>
+      )}
+
+      {frame && (
+        <>
+          {frames.length > 1 && (
+            <div>
+              <label>Slide frame</label>
+              <select value={frameIdx} onChange={(e) => setFrameIdx(Number(e.target.value))} style={{ marginTop: 5 }}>
+                {frames.map((f, i) => (
+                  <option key={f.id} value={i}>{i + 1}. {f.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <div>
+            <label>Live render — Figma node tree → React (same mapping as the generator)</label>
+            <div className="figma-preview" style={{ marginTop: 5, minHeight: 120, padding: 8 }}>
+              <Scaled w={frame.absoluteBoundingBox?.width ?? 1280}>
+                <FigmaRenderer node={frame} />
+              </Scaled>
+            </div>
+          </div>
+
+          <div className="row" style={{ gap: 8 }}>
+            <button className="icon-btn" onClick={copyCode}>{copied ? "✓ Copied" : "⧉ Copy React code"}</button>
+            <button className="icon-btn" onClick={downloadCode}>↓ Download .tsx</button>
+          </div>
+
+          <details>
+            <summary style={{ cursor: "pointer", fontSize: 12, fontWeight: 700, color: "var(--ink-soft)" }}>
+              Generated React code (from Figma data)
+            </summary>
+            <pre style={{
+              marginTop: 8,
+              fontSize: 10,
+              lineHeight: 1.5,
+              background: "rgba(22, 40, 60, 0.04)",
+              border: "1px solid rgba(190, 214, 236, 0.7)",
+              borderRadius: 10,
+              padding: 10,
+              overflow: "auto",
+              maxHeight: 260,
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-all",
+            }}>
+              {generatedCode}
+            </pre>
+          </details>
+        </>
+      )}
+
+      {SampleSlide && sourceLabel.includes("sample") && (
+        <div>
+          <label>Committed generated output — src/figma/generated/</label>
+          <p className="figma-msg" style={{ marginTop: 0 }}>
+            <code>{SampleSlide.name}</code> was written by{" "}
+            <code>scripts/figma-to-react.mjs</code> from <code>scripts/sample-slide.json</code> and is
+            part of this repo — identical to the live render above.
+          </p>
+          <div className="figma-preview" style={{ marginTop: 5, padding: 8 }}>
+            <Scaled w={1280}>
+              <SampleSlide />
+            </Scaled>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

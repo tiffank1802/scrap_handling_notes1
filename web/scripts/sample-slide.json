@@ -1,0 +1,233 @@
+{
+  "name": "Liquid Glass — Agenda (sample Figma file)",
+  "lastModified": "2026-09-19T00:00:00Z",
+  "document": {
+    "id": "0:0",
+    "name": "Document",
+    "type": "DOCUMENT",
+    "children": [
+      {
+        "id": "0:1",
+        "name": "Page 1",
+        "type": "PAGE",
+        "children": [
+          {
+            "id": "1:1",
+            "name": "Slide 02 — Agenda",
+            "type": "FRAME",
+            "absoluteBoundingBox": { "x": 0, "y": 0, "width": 1280, "height": 720 },
+            "fills": [{ "type": "SOLID", "color": { "r": 0.969, "g": 0.984, "b": 1, "a": 1 }, "opacity": 1, "visible": true }],
+            "strokes": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1, "a": 0.95 }, "opacity": 1, "visible": true }],
+            "strokeWeight": 1,
+            "cornerRadius": 28,
+            "clipsContent": true,
+            "effects": [
+              { "type": "DROP_SHADOW", "color": { "r": 0.118, "g": 0.306, "b": 0.51, "a": 0.18 }, "offset": { "x": 0, "y": 18 }, "radius": 50, "spread": -12, "visible": true }
+            ],
+            "children": [
+              {
+                "id": "2:1",
+                "name": "Kicker",
+                "type": "TEXT",
+                "absoluteBoundingBox": { "x": 40, "y": 26, "width": 900, "height": 20 },
+                "fills": [{ "type": "SOLID", "color": { "r": 0.145, "g": 0.388, "b": 0.922, "a": 1 }, "opacity": 1, "visible": true }],
+                "style": { "fontFamily": "Inter", "fontWeight": 700, "fontSize": 12.5, "letterSpacing": 1.75, "lineHeightPx": 20, "textAlignHorizontal": "LEFT" },
+                "characters": "AGENDA · THE RESEARCH PLAN IN FOUR TOPICS"
+              },
+              {
+                "id": "2:2",
+                "name": "Title",
+                "type": "TEXT",
+                "absoluteBoundingBox": { "x": 40, "y": 50, "width": 900, "height": 40 },
+                "fills": [{ "type": "SOLID", "color": { "r": 0.086, "g": 0.157, "b": 0.235, "a": 1 }, "opacity": 1, "visible": true }],
+                "style": { "fontFamily": "Inter", "fontWeight": 800, "fontSize": 30, "letterSpacing": -0.45, "lineHeightPx": 34, "textAlignHorizontal": "LEFT" },
+                "characters": "Agenda"
+              },
+              {
+                "id": "3:1",
+                "name": "Row 1",
+                "type": "FRAME",
+                "absoluteBoundingBox": { "x": 40, "y": 140, "width": 1200, "height": 100 },
+                "fills": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1, "a": 0.55 }, "opacity": 1, "visible": true }],
+                "strokes": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1, "a": 0.95 }, "opacity": 1, "visible": true }],
+                "strokeWeight": 1,
+                "cornerRadius": 16,
+                "clipsContent": true,
+                "effects": [
+                  { "type": "DROP_SHADOW", "color": { "r": 0.118, "g": 0.306, "b": 0.51, "a": 0.14 }, "offset": { "x": 0, "y": 6 }, "radius": 20, "spread": -8, "visible": true },
+                  { "type": "BACKGROUND_BLUR", "radius": 18, "visible": true }
+                ],
+                "children": [
+                  {
+                    "id": "3:10",
+                    "name": "Chip 1",
+                    "type": "RECTANGLE",
+                    "absoluteBoundingBox": { "x": 62, "y": 170, "width": 40, "height": 40 },
+                    "fills": [{ "type": "GRADIENT_LINEAR", "opacity": 1, "visible": true, "gradientStops": [ { "position": 0, "color": { "r": 0.298, "g": 0.765, "b": 0.969, "a": 1 } }, { "position": 0.48, "color": { "r": 0.184, "g": 0.486, "b": 0.965, "a": 1 } }, { "position": 1, "color": { "r": 0.416, "g": 0.361, "b": 0.961, "a": 1 } } ], "gradientHandlePositions": [ { "x": 0, "y": 0.5 }, { "x": 1, "y": 0.5 } ] }],
+                    "cornerRadius": 12
+                  },
+                  {
+                    "id": "3:11",
+                    "name": "Row 1 title",
+                    "type": "TEXT",
+                    "absoluteBoundingBox": { "x": 122, "y": 162, "width": 1060, "height": 24 },
+                    "fills": [{ "type": "SOLID", "color": { "r": 0.086, "g": 0.157, "b": 0.235, "a": 1 }, "opacity": 1, "visible": true }],
+                    "style": { "fontFamily": "Inter", "fontWeight": 800, "fontSize": 16, "letterSpacing": -0.16, "lineHeightPx": 24, "textAlignHorizontal": "LEFT" },
+                    "characters": "Theory of particle-based models (DEM) & conveyor systems"
+                  },
+                  {
+                    "id": "3:12",
+                    "name": "Row 1 sub",
+                    "type": "TEXT",
+                    "absoluteBoundingBox": { "x": 122, "y": 192, "width": 1060, "height": 20 },
+                    "fills": [{ "type": "SOLID", "color": { "r": 0.282, "g": 0.376, "b": 0.478, "a": 1 }, "opacity": 1, "visible": true }],
+                    "style": { "fontFamily": "Inter", "fontWeight": 400, "fontSize": 12.5, "lineHeightPx": 20, "textAlignHorizontal": "LEFT" },
+                    "characters": "Non-spherical shape representation • contact mechanics • belt / chute / vibratory-feeder kinematics"
+                  }
+                ]
+              },
+              {
+                "id": "3:2",
+                "name": "Row 2",
+                "type": "FRAME",
+                "absoluteBoundingBox": { "x": 40, "y": 270, "width": 1200, "height": 100 },
+                "fills": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1, "a": 0.55 }, "opacity": 1, "visible": true }],
+                "strokes": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1, "a": 0.95 }, "opacity": 1, "visible": true }],
+                "strokeWeight": 1,
+                "cornerRadius": 16,
+                "clipsContent": true,
+                "effects": [
+                  { "type": "DROP_SHADOW", "color": { "r": 0.118, "g": 0.306, "b": 0.51, "a": 0.14 }, "offset": { "x": 0, "y": 6 }, "radius": 20, "spread": -8, "visible": true },
+                  { "type": "BACKGROUND_BLUR", "radius": 18, "visible": true }
+                ],
+                "children": [
+                  {
+                    "id": "3:20",
+                    "name": "Chip 2",
+                    "type": "RECTANGLE",
+                    "absoluteBoundingBox": { "x": 62, "y": 300, "width": 40, "height": 40 },
+                    "fills": [{ "type": "GRADIENT_LINEAR", "opacity": 1, "visible": true, "gradientStops": [ { "position": 0, "color": { "r": 0.298, "g": 0.765, "b": 0.969, "a": 1 } }, { "position": 0.48, "color": { "r": 0.184, "g": 0.486, "b": 0.965, "a": 1 } }, { "position": 1, "color": { "r": 0.416, "g": 0.361, "b": 0.961, "a": 1 } } ], "gradientHandlePositions": [ { "x": 0, "y": 0.5 }, { "x": 1, "y": 0.5 } ] }],
+                    "cornerRadius": 12
+                  },
+                  {
+                    "id": "3:21",
+                    "name": "Row 2 title",
+                    "type": "TEXT",
+                    "absoluteBoundingBox": { "x": 122, "y": 292, "width": 1060, "height": 24 },
+                    "fills": [{ "type": "SOLID", "color": { "r": 0.086, "g": 0.157, "b": 0.235, "a": 1 }, "opacity": 1, "visible": true }],
+                    "style": { "fontFamily": "Inter", "fontWeight": 800, "fontSize": 16, "letterSpacing": -0.16, "lineHeightPx": 24, "textAlignHorizontal": "LEFT" },
+                    "characters": "State of the art & knowledge gaps in scrap / EAF modelling"
+                  },
+                  {
+                    "id": "3:22",
+                    "name": "Row 2 sub",
+                    "type": "TEXT",
+                    "absoluteBoundingBox": { "x": 122, "y": 322, "width": 1060, "height": 20 },
+                    "fills": [{ "type": "SOLID", "color": { "r": 0.282, "g": 0.376, "b": 0.478, "a": 1 }, "opacity": 1, "visible": true }],
+                    "style": { "fontFamily": "Inter", "fontWeight": 400, "fontSize": 12.5, "lineHeightPx": 20, "textAlignHorizontal": "LEFT" },
+                    "characters": "Where the literature stands today — and what it has not solved"
+                  }
+                ]
+              },
+              {
+                "id": "3:3",
+                "name": "Row 3",
+                "type": "FRAME",
+                "absoluteBoundingBox": { "x": 40, "y": 400, "width": 1200, "height": 100 },
+                "fills": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1, "a": 0.55 }, "opacity": 1, "visible": true }],
+                "strokes": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1, "a": 0.95 }, "opacity": 1, "visible": true }],
+                "strokeWeight": 1,
+                "cornerRadius": 16,
+                "clipsContent": true,
+                "effects": [
+                  { "type": "DROP_SHADOW", "color": { "r": 0.118, "g": 0.306, "b": 0.51, "a": 0.14 }, "offset": { "x": 0, "y": 6 }, "radius": 20, "spread": -8, "visible": true },
+                  { "type": "BACKGROUND_BLUR", "radius": 18, "visible": true }
+                ],
+                "children": [
+                  {
+                    "id": "3:30",
+                    "name": "Chip 3",
+                    "type": "RECTANGLE",
+                    "absoluteBoundingBox": { "x": 62, "y": 430, "width": 40, "height": 40 },
+                    "fills": [{ "type": "GRADIENT_LINEAR", "opacity": 1, "visible": true, "gradientStops": [ { "position": 0, "color": { "r": 0.298, "g": 0.765, "b": 0.969, "a": 1 } }, { "position": 0.48, "color": { "r": 0.184, "g": 0.486, "b": 0.965, "a": 1 } }, { "position": 1, "color": { "r": 0.416, "g": 0.361, "b": 0.961, "a": 1 } } ], "gradientHandlePositions": [ { "x": 0, "y": 0.5 }, { "x": 1, "y": 0.5 } ] }],
+                    "cornerRadius": 12
+                  },
+                  {
+                    "id": "3:31",
+                    "name": "Row 3 title",
+                    "type": "TEXT",
+                    "absoluteBoundingBox": { "x": 122, "y": 422, "width": 1060, "height": 24 },
+                    "fills": [{ "type": "SOLID", "color": { "r": 0.086, "g": 0.157, "b": 0.235, "a": 1 }, "opacity": 1, "visible": true }],
+                    "style": { "fontFamily": "Inter", "fontWeight": 800, "fontSize": 16, "letterSpacing": -0.16, "lineHeightPx": 24, "textAlignHorizontal": "LEFT" },
+                    "characters": "Methodology, novelty & anticipated challenges"
+                  },
+                  {
+                    "id": "3:32",
+                    "name": "Row 3 sub",
+                    "type": "TEXT",
+                    "absoluteBoundingBox": { "x": 122, "y": 452, "width": 1060, "height": 20 },
+                    "fills": [{ "type": "SOLID", "color": { "r": 0.282, "g": 0.376, "b": 0.478, "a": 1 }, "opacity": 1, "visible": true }],
+                    "style": { "fontFamily": "Inter", "fontWeight": 400, "fontSize": 12.5, "lineHeightPx": 20, "textAlignHorizontal": "LEFT" },
+                    "characters": "4-year research plan • coarse-graining calibration strategy • project novelty"
+                  }
+                ]
+              },
+              {
+                "id": "3:4",
+                "name": "Row 4",
+                "type": "FRAME",
+                "absoluteBoundingBox": { "x": 40, "y": 530, "width": 1200, "height": 100 },
+                "fills": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1, "a": 0.55 }, "opacity": 1, "visible": true }],
+                "strokes": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1, "a": 0.95 }, "opacity": 1, "visible": true }],
+                "strokeWeight": 1,
+                "cornerRadius": 16,
+                "clipsContent": true,
+                "effects": [
+                  { "type": "DROP_SHADOW", "color": { "r": 0.118, "g": 0.306, "b": 0.51, "a": 0.14 }, "offset": { "x": 0, "y": 6 }, "radius": 20, "spread": -8, "visible": true },
+                  { "type": "BACKGROUND_BLUR", "radius": 18, "visible": true }
+                ],
+                "children": [
+                  {
+                    "id": "3:40",
+                    "name": "Chip 4",
+                    "type": "RECTANGLE",
+                    "absoluteBoundingBox": { "x": 62, "y": 560, "width": 40, "height": 40 },
+                    "fills": [{ "type": "GRADIENT_LINEAR", "opacity": 1, "visible": true, "gradientStops": [ { "position": 0, "color": { "r": 0.298, "g": 0.765, "b": 0.969, "a": 1 } }, { "position": 0.48, "color": { "r": 0.184, "g": 0.486, "b": 0.965, "a": 1 } }, { "position": 1, "color": { "r": 0.416, "g": 0.361, "b": 0.961, "a": 1 } } ], "gradientHandlePositions": [ { "x": 0, "y": 0.5 }, { "x": 1, "y": 0.5 } ] }],
+                    "cornerRadius": 12
+                  },
+                  {
+                    "id": "3:41",
+                    "name": "Row 4 title",
+                    "type": "TEXT",
+                    "absoluteBoundingBox": { "x": 122, "y": 552, "width": 1060, "height": 24 },
+                    "fills": [{ "type": "SOLID", "color": { "r": 0.086, "g": 0.157, "b": 0.235, "a": 1 }, "opacity": 1, "visible": true }],
+                    "style": { "fontFamily": "Inter", "fontWeight": 800, "fontSize": 16, "letterSpacing": -0.16, "lineHeightPx": 24, "textAlignHorizontal": "LEFT" },
+                    "characters": "Skills, competencies & personal reflection"
+                  },
+                  {
+                    "id": "3:42",
+                    "name": "Row 4 sub",
+                    "type": "TEXT",
+                    "absoluteBoundingBox": { "x": 122, "y": 582, "width": 1060, "height": 20 },
+                    "fills": [{ "type": "SOLID", "color": { "r": 0.282, "g": 0.376, "b": 0.478, "a": 1 }, "opacity": 1, "visible": true }],
+                    "style": { "fontFamily": "Inter", "fontWeight": 400, "fontSize": 12.5, "lineHeightPx": 20, "textAlignHorizontal": "LEFT" },
+                    "characters": "Technical toolkit • data integration • experimental validation • industrial collaboration"
+                  }
+                ]
+              },
+              {
+                "id": "2:9",
+                "name": "Footer",
+                "type": "TEXT",
+                "absoluteBoundingBox": { "x": 40, "y": 686, "width": 900, "height": 16 },
+                "fills": [{ "type": "SOLID", "color": { "r": 0.49, "g": 0.573, "b": 0.659, "a": 1 }, "opacity": 1, "visible": true }],
+                "style": { "fontFamily": "Inter", "fontWeight": 400, "fontSize": 10.5, "lineHeightPx": 16, "textAlignHorizontal": "LEFT" },
+                "characters": "Particle-Based Modelling of Scrap Handling  •  TU Delft × Tata Steel Netherlands"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

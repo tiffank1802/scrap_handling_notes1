@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "figma:generate": "node scripts/figma-to-react.mjs"
   },
   "dependencies": {
+    "figma-api": "^2.2.1-beta",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },
